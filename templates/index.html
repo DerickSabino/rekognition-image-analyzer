@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Detector de Imagem AWS Rekognition</title>
+    </head>
+    <body>
+        <h1>Upload de Imagem</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Enviar</button>
+    </form>
+
+      {% if image %}
+        <h2>Imagem:</h2>
+        <img src="{{ image }}" width="300"><br><br>
+
+        <h2>Rótulos detectados:</h2>
+        <ul>
+            {% for label in labels %}
+                <li>{{ label.Name }} – {{ "%.2f"|format(label.Confidence) }}%</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </body>
+</html>
