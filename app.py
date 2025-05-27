@@ -3,17 +3,19 @@ import boto3
 import os
 
 app = Flask(__name__)
+
 UPLOAD_FOLDER = 'static/uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 rekognition = boto3.client('rekognition', region_name='us-east-1')
-bucket = 'bucket-derick-sabino' 
+s3 = boto3.client('s3')
+bucket = 'bucket-derick-sabino'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    labels = []
+    labels = [] 
     image_url = ''
 
     if request.method == 'POST':
@@ -23,9 +25,13 @@ def index():
             file.save(image_path)
             image_url = '/' + image_path
 
+            # envia imagem pro S3
+            s3.upload_file(image_path, bucket, file.filename)
+
+            # detecta labels com Rekognition
             response = rekognition.detect_labels(
                 Image={
-                    'S3Object':{
+                    'S3Object': {
                         'Bucket': bucket,
                         'Name': file.filename
                     }
