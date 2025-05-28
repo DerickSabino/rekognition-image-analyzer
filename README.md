@@ -30,6 +30,8 @@ Você precisa ter um bucket no S3 e permissões no Rekognition.
 4. Rode o app com: python app.py
 
 5. Abra no navegador: http://127.0.0.1:5000/
+
+---
   
 📌 Dica
 Esse projeto é um ótimo exemplo de como usar IA da AWS em algo visual. Pode ser adaptado pra:
